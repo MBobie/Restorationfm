@@ -1,0 +1,26 @@
+name: restoration_fm_radio_app
+description: "Restoration FM Radio App"
+publish_to: 'none' # Set this if the app is not intended for publishing to pub.dev
+
+version: 1.0.0+1 # Semantic versioning: MAJOR.MINOR.PATCH+BUILD
+
+environment:
+  sdk: ">=3.5.0 <4.0.0" # Ensure your Flutter and Dart SDK versions match this range
+
+dependencies:
+  flutter:
+    sdk: flutter
+  url_launcher: ^6.1.11 # Handles launching external URLs
+  cupertino_icons: ^1.0.8 # Provides iOS-style icons
+  badges: ^3.0.0 # Badge widget library (remove if unused)
+ 
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter # For testing your Flutter app
+  flutter_lints: ^2.0.1 # Linting rules for Dart/Flutter
+
+flutter:
+  uses-material-design: true # Enables Material Design in your app
+  assets:
+    - assets/images/placeholder.png # Ensure this path exists in your project
