@@ -390,29 +390,38 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Image.network(
-              'https://i.imgur.com/kt5CZ2Q.png', // desired image URL
-              height: 55, width: 55, // size as needed
-            ),
-            const SizedBox(width: 10), // spacing
-            const Text('Chatroom'),
-          ],
-        ),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Row(
+        children: [
+          Image.network(
+            'https://i.imgur.com/kt5CZ2Q.png', // desired image URL
+            height: 55, width: 55, // size as needed
+          ),
+          const SizedBox(width: 10), // spacing
+          const Text('Chatroom'),
+        ],
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage('https://i.imgur.com/rBedVU5.png'), // Background image
-            fit: BoxFit.cover, // Cover the entire body
-            alignment: Alignment.center, // Align image
+    ),
+    body: Stack(
+      children: [
+        // Background Image
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage('https://i.imgur.com/rBedVU5.png'), // Background image
+              fit: BoxFit.cover, // Cover the entire body
+              alignment: Alignment.center, // Align image
+            ),
           ),
         ),
-        child: Column(
+        // Semi-transparent overlay
+        Container(
+          color: Colors.black.withOpacity(0.5), // Semi-transparent black overlay
+        ),
+        // Content
+        Column(
           children: [
             Expanded(
               child: ListView.builder(
@@ -448,7 +457,7 @@ class _ChatRoomState extends State<ChatRoom> {
                       decoration: const InputDecoration(
                         hintText: 'Type your message...',
                         filled: true,
-                        fillColor: Colors.white, // Background for input
+                        fillColor: Colors.transparent, // Background for input
                       ),
                     ),
                   ),
@@ -489,7 +498,8 @@ class _ChatRoomState extends State<ChatRoom> {
             ),
           ],
         ),
-      ),
-    );
-  }
+      ],
+    ),
+  );
+}
 }
