@@ -126,9 +126,10 @@ drawer: Drawer(
             ),
             padding: EdgeInsets.zero,
             child: SizedBox.expand(
+              
               child: Image.network(
-                'https://i.imgur.com/kt5CZ2Q.png', // Logo
-                fit: BoxFit.contain,
+                'https://i.imgur.com/smoaOoM.png', // Logo
+                fit: BoxFit.contain
               ),
             ),
           ),
@@ -233,6 +234,8 @@ drawer: Drawer(
           alignment: Alignment.topCenter,
         ),
       ),
+   child: Container(
+    color: Colors.black.withOpacity(0.5), // Overlay
         child: Center(
           child: Padding(
     padding: const EdgeInsets.only(top: 30), //
@@ -244,7 +247,7 @@ drawer: Drawer(
           style: const TextStyle(
             fontSize: 42,
             fontWeight: FontWeight.bold,
-            color: Colors.black, // 
+            color:  Color(0xFFFFD700) // 
           ),
           textAlign: TextAlign.center, // Center align the text
         ),
@@ -253,8 +256,8 @@ drawer: Drawer(
           "Restoring Lives through Prayer and God’s Word",
           style: const TextStyle(
             fontSize: 18,
-            color: Colors.black, 
-            fontStyle: FontStyle.italic, // Optional for emphasis
+            color:  Color(0xFFFFD700), 
+            fontWeight: FontWeight.bold, // Optional for emphasis
           ),
           textAlign: TextAlign.center, // Center align the text
         ),
@@ -267,20 +270,20 @@ drawer: Drawer(
           },
               child: Image.network(
                 'https://i.imgur.com/smoaOoM.png',
-                height: 200,
+                height: 180,
               ),
             ),
       const SizedBox(height: 30),
       Text(
         _isPlaying ? 'Now Playing: Restoration FM Live' : 'Paused',
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
       ),
       const SizedBox(height: 0),
       IconButton(
         icon: Icon(
           _isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled,
           size: 50,
-          color: Colors.blue,
+          color: Color(0xFF002855),
         ),
         onPressed: () {
           setState(() {
@@ -296,6 +299,7 @@ drawer: Drawer(
   ),
 ),
 )
+   )
     );
   }
 }
@@ -489,4 +493,3 @@ class _ChatRoomState extends State<ChatRoom> {
     );
   }
 }
-
