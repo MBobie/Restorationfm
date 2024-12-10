@@ -393,7 +393,7 @@ class _ChatRoomState extends State<ChatRoom> {
           children: [
             Image.network(
               'https://i.imgur.com/kt5CZ2Q.png', // desired image URL
-              height: 30, // size as needed
+              height: 55, width: 55, // size as needed
             ),
             const SizedBox(width: 10), // spacing
             const Text('Chatroom'),
