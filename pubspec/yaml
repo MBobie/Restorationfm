@@ -13,7 +13,13 @@ dependencies:
   url_launcher: ^6.1.11 # Handles launching external URLs
   cupertino_icons: ^1.0.8 # Provides iOS-style icons
   badges: ^3.0.0 # Badge widget library (remove if unused)
- 
+  audioplayers: ^0.20.1
+  flutter_local_notifications: ^15.0.0
+  image_picker: ^0.8.8+7
+  permission_handler: ^10.6.0
+  flutter_sound: ^9.2.15
+
+
 
 dev_dependencies:
   flutter_test:
