@@ -171,7 +171,7 @@ drawer: Drawer(
             child: SizedBox.expand(
               
               child: Image.network(
-                'https://i.imgur.com/smoaOoM.png', // Logo
+                'https://i.imgur.com/sj1lufZ.png', // Logo
                 fit: BoxFit.contain
               ),
             ),
@@ -311,7 +311,7 @@ drawer: Drawer(
                       );
                     },
                     child: Image.network(
-                      'https://i.imgur.com/smoaOoM.png',
+                      'https://i.imgur.com/sj1lufZ.png',
                       height: 180,
                     ),
                   ),
@@ -332,7 +332,7 @@ drawer: Drawer(
                           ? Icons.pause_circle_filled
                           : Icons.play_circle_filled,
                       size: 50,
-                      color: Color(0xFF002855),
+                      color: Colors.blue,
                     ),
                     onPressed: () {
                       setState(() {
