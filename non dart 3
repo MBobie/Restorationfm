@@ -257,34 +257,47 @@ class _ChatRoomState extends State<ChatRoom> {
   String? _userName;
   String? _phoneNumber;
   String _userImageUrl = 'https://via.placeholder.com/150';
+  FlutterSoundRecorder? _audioRecorder;
+  bool _isRecording = false;
+  String? _audioFilePath;
 
-  void _pickMedia(ImageSource source, String mediaType) async {
-    final picker = ImagePicker();
-    XFile? file;
+  @override
+  void initState() {
+    super.initState();
+    _initRecorder();
+  }
 
-    if (mediaType == 'image') {
-      file = await picker.pickImage(source: source);
-    } else if (mediaType == 'video') {
-      file = await picker.pickVideo(source: source);
-    }
+  Future<void> _initRecorder() async {
+    _audioRecorder = FlutterSoundRecorder();
+    await _audioRecorder!.openRecorder();
+  }
 
-    if (file != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$mediaType selected: ${file.path}')),
-      );
-    }
+  Future<void> _startRecording() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath = '${directory.path}/audio_message_${DateTime.now().millisecondsSinceEpoch}.aac';
+
+    await _audioRecorder!.startRecorder(toFile: filePath);
+    setState(() {
+      _isRecording = true;
+      _audioFilePath = filePath;
+    });
+  }
+
+  Future<void> _stopRecording() async {
+    await _audioRecorder!.stopRecorder();
+    setState(() {
+      _isRecording = false;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Recording saved!')),
+    );
   }
 
   void _recordVoice() async {
-    final status = await Permission.microphone.request();
-    if (status.isGranted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Voice recording not implemented yet')),
-      );
+    if (_isRecording) {
+      await _stopRecording();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Microphone permission denied')),
-      );
+      await _startRecording();
     }
   }
 
@@ -299,9 +312,27 @@ class _ChatRoomState extends State<ChatRoom> {
         });
         _messageController.clear();
       });
-
-      widget.onNewMessage();
     }
+
+    if (_audioFilePath != null) {
+      setState(() {
+        _messages.add({
+          'name': _userName ?? 'Anonymous',
+          'phone': _phoneNumber ?? 'Unknown',
+          'message': 'Audio Message',
+          'audio': _audioFilePath!,
+        });
+        _audioFilePath = null;
+      });
+    }
+
+    widget.onNewMessage();
+  }
+
+  @override
+  void dispose() {
+    _audioRecorder!.closeRecorder();
+    super.dispose();
   }
 
   @override
@@ -315,6 +346,21 @@ class _ChatRoomState extends State<ChatRoom> {
               itemCount: _messages.length,
               itemBuilder: (context, index) {
                 final message = _messages[index];
+                if (message.containsKey('audio')) {
+                  return ListTile(
+                    leading: const Icon(Icons.audiotrack),
+                    title: Text('${message['name']} (${message['phone']})'),
+                    subtitle: const Text('Audio Message'),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.play_arrow),
+                      onPressed: () async {
+                        FlutterSoundPlayer player = FlutterSoundPlayer();
+                        await player.openPlayer();
+                        await player.startPlayer(fromURI: message['audio']);
+                      },
+                    ),
+                  );
+                }
                 return ListTile(
                   leading: CircleAvatar(
                     backgroundImage: message['image']!.startsWith('http')
@@ -333,15 +379,7 @@ class _ChatRoomState extends State<ChatRoom> {
                 child: TextField(controller: _messageController),
               ),
               IconButton(
-                icon: const Icon(Icons.image),
-                onPressed: () => _pickMedia(ImageSource.gallery, 'image'),
-              ),
-              IconButton(
-                icon: const Icon(Icons.videocam),
-                onPressed: () => _pickMedia(ImageSource.camera, 'video'),
-              ),
-              IconButton(
-                icon: const Icon(Icons.mic),
+                icon: Icon(_isRecording ? Icons.stop : Icons.mic),
                 onPressed: _recordVoice,
               ),
               IconButton(
